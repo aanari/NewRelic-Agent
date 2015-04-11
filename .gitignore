@@ -1,0 +1,3 @@
+.build
+blib/
+NewRelic-Agent*
