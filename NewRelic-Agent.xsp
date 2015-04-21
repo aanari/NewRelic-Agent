@@ -1,0 +1,9 @@
+%module{NewRelic::Agent};
+%loadplugin{feature::default_xs_typemap};
+
+%name{NewRelic::Agent} class Agent
+{
+  Agent();
+  ~Agent();
+  int GetInt();
+};

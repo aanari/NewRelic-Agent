@@ -1,7 +1,8 @@
-use Test::Modern;
-use NewRelic::Agent;
+use Test::Most;
 use Data::Dump;
+BEGIN { use_ok('NewRelic::Agent') };
 
-dd NewRelic::Agent::hello();
+my $o = NewRelic::Agent->new;
+dd $o->GetInt();
 
 done_testing;

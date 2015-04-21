@@ -1,13 +1,13 @@
-#define PERL_NO_GET_CONTEXT
+#ifdef __cplusplus
+extern "C" {
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
 #include "ppport.h"
+}
+#endif
 
-MODULE = NewRelic::Agent PACKAGE = NewRelic::Agent
-PROTOTYPES: ENABLE
+#include "Agent.h"
 
-void
-hello()
-    CODE:
-        printf("Hello, world!\n");
+MODULE = NewRelic::Agent        PACKAGE = NewRelic::Agent
+INCLUDE_COMMAND: $^X -MExtUtils::XSpp::Cmd -e xspp -- NewRelic-Agent.xsp
