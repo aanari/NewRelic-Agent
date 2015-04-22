@@ -16,17 +16,19 @@ override _build_WriteMakefile_args => sub {
         File::Spec->catdir($sdk, 'include'),
     );
 
-    my @LIBS = glob File::Spec->catdir($sdk, 'lib', '*');
+    my @LIBS = map {
+        '-L' . File::Spec->catdir($sdk, 'lib') . "-l$_"
+    } qw/newrelic-common newrelic-collector-client newrelic-transaction/;
 
     return +{
         %{ super() },
-        depend => { 'WithAgent.c' => 'NewRelic-Agent.xsp' },
-        CC     => $CC,
-        INC    => join(' ', map { "-I$_" } @INC),
-        LD     => '$(CC)',
-        LIBS   => join(' ', map { "-l$_" } @LIBS),
-        OBJECT => '$(O_FILES)',
-        XSOPT  => '-C++ -hiertype',
+        depend        => { 'WithAgent.c' => 'NewRelic-Agent.xsp' },
+        CC            => $CC,
+        INC           => join(' ', map { "-I$_" } @INC),
+        LD            => '$(CC)',
+        LIBS          => \@LIBS,
+        OBJECT        => '$(O_FILES)',
+        XSOPT         => '-C++ -hiertype',
     };
 };
 

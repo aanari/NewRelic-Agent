@@ -1,5 +1,9 @@
 #include "Agent.h"
 
+#include "newrelic_common.h"
+#include "newrelic_collector_client.h"
+#include "newrelic_transaction.h"
+
 #include <string>
 
 using namespace std;
