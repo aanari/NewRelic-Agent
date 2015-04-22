@@ -7,7 +7,17 @@ extern "C" {
 }
 #endif
 
+/* include your class headers here */
 #include "Agent.h"
 
-MODULE = NewRelic::Agent        PACKAGE = NewRelic::Agent
+/* We need one MODULE... line to start the actual XS section of the file.
+ * The XS++ preprocessor will output its own MODULE and PACKAGE lines */
+MODULE = NewRelic::Agent		PACKAGE = NewRelic::Agent
+
+## The include line executes xspp with the supplied typemap and the
+## xsp interface code for our class.
+## It will include the output of the xsubplusplus run.
+
 INCLUDE_COMMAND: $^X -MExtUtils::XSpp::Cmd -e xspp -- NewRelic-Agent.xsp
+
+

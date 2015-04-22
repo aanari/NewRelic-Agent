@@ -1,12 +1,23 @@
 #ifndef _Agent_h_
 #define _Agent_h_
 
-class Agent {
-  public:
-    Agent();
-    ~Agent() {}
+#include <string>
 
-    int GetInt();
+class Agent {
+public:
+  Agent();
+  ~Agent() {}
+
+  int GetInt() { return fInt; }
+  const char* GetString();
+
+  void SetValue(int arg);
+  void SetValue(const char* arg);
+
+private:
+  std::string fString;
+  int fInt;
 };
 
 #endif
+
