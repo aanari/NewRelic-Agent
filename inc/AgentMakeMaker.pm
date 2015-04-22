@@ -16,8 +16,10 @@ override _build_WriteMakefile_args => sub {
         File::Spec->catdir($sdk, 'include'),
     );
 
+    my $sdklib = File::Spec->catdir($sdk, 'lib');
+
     my @LIBS = map {
-        '-L' . File::Spec->catdir($sdk, 'lib') . "-l$_"
+        "-L$sdklib -l$_"
     } qw/newrelic-common newrelic-collector-client newrelic-transaction/;
 
     return +{
@@ -26,8 +28,9 @@ override _build_WriteMakefile_args => sub {
         CC            => $CC,
         INC           => join(' ', map { "-I$_" } @INC),
         LD            => '$(CC)',
-        LIBS          => \@LIBS,
+        LIBS          => join(' ', @LIBS),
         OBJECT        => '$(O_FILES)',
+        PMLIBDIRS     => ['lib', '$(BASEEXT)', $sdklib],
         XSOPT         => '-C++ -hiertype',
     };
 };

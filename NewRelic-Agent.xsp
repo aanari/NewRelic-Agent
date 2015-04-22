@@ -5,6 +5,8 @@
 {
   %name{_new} Agent(const char* license_key, const char* app_name, const char* app_language, const char* app_language_version);
   ~Agent();
+  long begin_transaction(const char* name, bool is_web);
+  int end_transaction(long transaction_id);
   const char* get_license_key();
   const char* get_app_name();
   const char* get_app_language();

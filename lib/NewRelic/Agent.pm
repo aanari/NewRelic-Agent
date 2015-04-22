@@ -1,15 +1,14 @@
 package NewRelic::Agent;
 use strict;
 use warnings;
+use Method::Signatures;
 
 our $VERSION = '0.01';
 
 require XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
 
-sub new {
-    my ($class, %args) = @_;
-
+method new(%args) {
     my $license_key          = delete $args{license_key}
                             || $ENV{NEWRELIC_LICENSE_KEY}
                             || '';
@@ -23,7 +22,7 @@ sub new {
                             || $ENV{NEWRELIC_APP_LANGUAGE_VERSION}
                             || $];
 
-    $class->_new($license_key, $app_name, $app_language, $app_language_version);
+    $self->_new($license_key, $app_name, $app_language, $app_language_version);
 }
 
 1;

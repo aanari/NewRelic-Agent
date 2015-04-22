@@ -13,7 +13,10 @@ class Agent {
       const char* app_language         = NULL,
       const char* app_language_version = NULL
     );
-    ~Agent() {}
+    ~Agent();
+    void initialize();
+    long begin_transaction(const char* name, bool is_web);
+    int end_transaction(long transaction_id);
     const char* get_license_key();
     const char* get_app_name();
     const char* get_app_language();
