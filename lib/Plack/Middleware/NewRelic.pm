@@ -56,3 +56,29 @@ method call($env) {
 }
 
 1;
+
+=head1 SYNOPSIS
+
+    use Plack::Builder;
+    use Plack::Middleware::NewRelic;
+    my $app = sub { ... } # as usual
+    # NewRelic Options
+    my %options = (
+        enabled     => 1,
+        license_key => 'asdf1234',
+        app_name    => 'REST API',
+    );
+    builder {
+        enable "Plack::Middleware::NewRelic", %options;
+        $app;
+    };
+
+=head1 DESCRIPTION
+
+With the above in place, L<Plack::Middleware::NewRelic> will instrument your
+Plack application and send information to NewRelic, using the L<NewRelic::Agent>
+module. All configuration options are required for this middleware to function.
+
+=for markdown [![Build Status](https://travis-ci.org/aanari/Plack-Middleware-NewRelic.svg?branch=master)](https://travis-ci.org/aanari/Plack-Middleware-NewRelic)
+
+=cut
