@@ -45,6 +45,8 @@ method new(%args) {
 
 This module provides bindings for the L<NewRelic|https://docs.newrelic.com/docs/agents/agent-sdk/getting-started/new-relic-agent-sdk> Agent SDK.
 
+=for markdown [![Build Status](https://travis-ci.org/aanari/NewRelic-Agent.svg?branch=master)](https://travis-ci.org/aanari/NewRelic-Agent)
+
 =head1 METHODS
 
 =head2 new

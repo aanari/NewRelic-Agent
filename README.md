@@ -24,6 +24,8 @@ version 0.04
 
 This module provides bindings for the [NewRelic](https://docs.newrelic.com/docs/agents/agent-sdk/getting-started/new-relic-agent-sdk) Agent SDK.
 
+[![Build Status](https://travis-ci.org/aanari/NewRelic-Agent.svg?branch=master)](https://travis-ci.org/aanari/NewRelic-Agent)
+
 # METHODS
 
 ## new
