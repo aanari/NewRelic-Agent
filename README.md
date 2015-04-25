@@ -4,7 +4,7 @@ Plack::Middleware::NewRelic - Plack middleware for NewRelic APM instrumentation
 
 # VERSION
 
-version 0.03
+version 0.0301
 
 # SYNOPSIS
 
@@ -26,9 +26,23 @@ version 0.03
 
 With the above in place, [Plack::Middleware::NewRelic](https://metacpan.org/pod/Plack::Middleware::NewRelic) will instrument your
 Plack application and send information to NewRelic, using the [NewRelic::Agent](https://metacpan.org/pod/NewRelic::Agent)
-module. All configuration options are required for this middleware to function.
+module.
 
 [![Build Status](https://travis-ci.org/aanari/Plack-Middleware-NewRelic.svg?branch=master)](https://travis-ci.org/aanari/Plack-Middleware-NewRelic)
+
+**Parameters**
+
+- - `license_key`
+
+    A valid NewRelic license key for your account.
+
+    This value is also automatically sourced from the `NEWRELIC_LICENSE_KEY` environment variable.
+
+- - `app_name`
+
+    The name of your application.
+
+    This value is also automatically sourced from the `NEWRELIC_APP_NAME` environment variable.
 
 # BUGS
 

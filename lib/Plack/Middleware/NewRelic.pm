@@ -9,17 +9,22 @@ use Plack::Util::Accessor qw(agent license_key app_name);
 # ABSTRACT: Plack middleware for NewRelic APM instrumentation
 
 method prepare_app {
-    return unless $self->license_key && $self->app_name;
+    my $license_key = $self->license_key || $ENV{NEWRELIC_LICENSE_KEY};
+    my $app_name    = $self->app_name    || $ENV{NEWRELIC_APP_NAME};
+
+    die 'Missing NewRelic license key' unless $license_key;
+    die 'Missing NewRelic app name'    unless $app_name;
+
     $self->agent(
         NewRelic::Agent->new(
-            license_key => $self->license_key,
-            app_name    => $self->app_name,
+            license_key => $license_key,
+            app_name    => $app_name,
         )
     );
     $self->agent->initialize;
 }
 
-method call($env) {
+method call(HashRef $env) {
     $self->begin_transaction($env)
         if $self->agent;
 
@@ -91,8 +96,26 @@ method end_transaction(HashRef $env) {
 
 With the above in place, L<Plack::Middleware::NewRelic> will instrument your
 Plack application and send information to NewRelic, using the L<NewRelic::Agent>
-module. All configuration options are required for this middleware to function.
+module.
 
 =for markdown [![Build Status](https://travis-ci.org/aanari/Plack-Middleware-NewRelic.svg?branch=master)](https://travis-ci.org/aanari/Plack-Middleware-NewRelic)
+
+B<Parameters>
+
+=over 4
+
+=item - C<license_key>
+
+A valid NewRelic license key for your account.
+
+This value is also automatically sourced from the C<NEWRELIC_LICENSE_KEY> environment variable.
+
+=item - C<app_name>
+
+The name of your application.
+
+This value is also automatically sourced from the C<NEWRELIC_APP_NAME> environment variable.
+
+=back
 
 =cut
