@@ -16,10 +16,11 @@ method prepare_app {
             app_name    => $self->app_name,
         )
     );
+    $self->agent->initialize;
 }
 
 method call($env) {
-    $txn_id;
+    my $txn_id;
     if ($self->agent) {
         $txn_id = $self->agent->begin_transaction;
         my $req = Plack::Request->new($env);
