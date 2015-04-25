@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Method::Signatures;
 
-our $VERSION = '0.0410';
+our $VERSION = '0.0420';
 
 require XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
