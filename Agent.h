@@ -13,8 +13,9 @@ class Agent {
       const char *app_language         = NULL,
       const char *app_language_version = NULL
     );
-    ~Agent();
-    void initialize();
+    ~Agent() {}
+    void embed_collector();
+    void init();
     long begin_transaction();
     int set_transaction_name(long transaction_id, const char *name);
     int set_transaction_request_url(long transaction_id, const char *request_url);

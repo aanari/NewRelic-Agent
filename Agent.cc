@@ -26,12 +26,11 @@ Agent::Agent(
     config_loaded = true;
 }
 
-Agent::~Agent() {
-  newrelic_request_shutdown("Destructor called");
+void Agent::embed_collector() {
+  newrelic_register_message_handler(newrelic_message_handler);
 }
 
-void Agent::initialize() {
-  newrelic_register_message_handler(newrelic_message_handler);
+void Agent::init() {
   newrelic_init(
     license_key.c_str(),
     app_name.c_str(),

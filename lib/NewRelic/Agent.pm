@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Method::Signatures;
 
-our $VERSION = '0.0420';
+our $VERSION = '0.0500';
 
 require XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
@@ -36,7 +36,8 @@ method new(%args) {
         app_name    => 'REST API',
     );
 
-    $agent->initialize;
+    $agent->embed_collector;
+    $agent->init;
     my $txn_id = $agent->begin_transaction;
     ...
     my $err_id = $agent->end_transaction($txn_id);
@@ -90,13 +91,22 @@ This value defaults to your perl version, and can also be automatically sourced 
 
 =back
 
-=head2 initialize
+=head2 embed_collector
+
+Embeds the collector agent for harvesting NewRelic data. This should be called before C<init>, if the agent is being used in Embedded mode and not Daemon mode.
+
+B<Example:>
+
+    $agent->embed_collector;
+
+
+=head2 init
 
 Initialize the connection to NewRelic.
 
 B<Example:>
 
-    $agent->initialize;
+    $agent->init;
 
 =head2 begin_transaction
 

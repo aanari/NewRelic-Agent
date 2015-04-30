@@ -5,7 +5,8 @@
 {
   %name{_new} Agent(const char* license_key, const char* app_name, const char* app_language, const char* app_language_version);
   ~Agent();
-  void initialize();
+  void embed_collector();
+  void init();
   long begin_transaction();
   int set_transaction_name(long transaction_id, const char *name);
   int set_transaction_request_url(long transaction_id, const char *request_url);

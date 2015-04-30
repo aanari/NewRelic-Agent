@@ -4,7 +4,7 @@ NewRelic::Agent
 
 # VERSION
 
-version 0.0420
+version 0.0500
 
 # SYNOPSIS
 
@@ -15,7 +15,8 @@ version 0.0420
         app_name    => 'REST API',
     );
 
-    $agent->initialize;
+    $agent->embed_collector;
+    $agent->init;
     my $txn_id = $agent->begin_transaction;
     ...
     my $err_id = $agent->end_transaction($txn_id);
@@ -65,13 +66,21 @@ Instantiates a new NewRelic::Agent client object.
 
     This value defaults to your perl version, and can also be automatically sourced from the `NEWRELIC_APP_LANGUAGE_VERSION` environment variable.
 
-## initialize
+## embed\_collector
+
+Embeds the collector agent for harvesting NewRelic data. This should be called before `init`, if the agent is being used in Embedded mode and not Daemon mode.
+
+**Example:**
+
+    $agent->embed_collector;
+
+## init
 
 Initialize the connection to NewRelic.
 
 **Example:**
 
-    $agent->initialize;
+    $agent->init;
 
 ## begin\_transaction
 
