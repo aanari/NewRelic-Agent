@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Method::Signatures;
 
-our $VERSION = '0.0502';
+our $VERSION = '0.0503';
 
 require XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
@@ -26,6 +26,8 @@ method new(%args) {
 }
 
 1;
+
+# ABSTRACT: Perl Agent for NewRelic APM
 
 =head1 SYNOPSIS
 

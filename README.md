@@ -1,10 +1,10 @@
 # NAME
 
-NewRelic::Agent
+NewRelic::Agent - Perl Agent for NewRelic APM
 
 # VERSION
 
-version 0.0502
+version 0.0503
 
 # SYNOPSIS
 
