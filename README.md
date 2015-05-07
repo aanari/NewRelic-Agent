@@ -4,7 +4,7 @@ NewRelic::Agent
 
 # VERSION
 
-version 0.0501
+version 0.0502
 
 # SYNOPSIS
 
