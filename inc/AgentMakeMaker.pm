@@ -13,10 +13,10 @@ override _build_WriteMakefile_args => sub {
     my $CC  = 'g++';
     my @INC = (
         $curdir,
-        File::Spec->rel2abs(File::Spec->catdir($sdk, 'include')),
+        File::Spec->catdir($sdk, 'include'),
     );
 
-    my $sdklib = File::Spec->rel2abs(File::Spec->catdir($sdk, 'lib'));
+    my $sdklib = File::Spec->catdir($sdk, 'lib');
 
     my @LIBS = map {
         "-L$sdklib -l$_"

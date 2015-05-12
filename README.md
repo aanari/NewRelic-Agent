@@ -4,7 +4,7 @@ NewRelic::Agent - Perl Agent for NewRelic APM
 
 # VERSION
 
-version 0.0503
+version 0.0510
 
 # SYNOPSIS
 
