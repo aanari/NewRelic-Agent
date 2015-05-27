@@ -4,7 +4,7 @@ Plack::Middleware::NewRelic - Plack middleware for NewRelic APM instrumentation
 
 # VERSION
 
-version 0.0301
+version 0.0500
 
 # SYNOPSIS
 
@@ -13,7 +13,6 @@ version 0.0301
     my $app = sub { ... } # as usual
     # NewRelic Options
     my %options = (
-        enabled     => 1,
         license_key => 'asdf1234',
         app_name    => 'REST API',
     );
@@ -43,6 +42,15 @@ module.
     The name of your application.
 
     This value is also automatically sourced from the `NEWRELIC_APP_NAME` environment variable.
+
+- - `path_rules`
+
+    A HashRef containing path replacement rules, containing case-insensitive regex patterns as string keys, and evaluatable strings as replacement values.
+
+    Regex capturing groups work as intended, so you can specify something like this in your ruleset:
+
+        # Replaces '/pages/new/asdf' with '/pages/new'
+        '(\/pages\/new)\/\S+' => '$1'
 
 # BUGS
 

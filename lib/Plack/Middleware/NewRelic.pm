@@ -1,27 +1,74 @@
 package Plack::Middleware::NewRelic;
 use parent qw(Plack::Middleware);
+use Moo;
+
+use 5.010;
+use CHI;
 use Method::Signatures;
 use NewRelic::Agent;
 use Plack::Request;
 use Plack::Util;
-use Plack::Util::Accessor qw(agent license_key app_name);
 
 # ABSTRACT: Plack middleware for NewRelic APM instrumentation
 
-method prepare_app {
-    my $license_key = $self->license_key || $ENV{NEWRELIC_LICENSE_KEY};
-    my $app_name    = $self->app_name    || $ENV{NEWRELIC_APP_NAME};
+has license_key => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_license_key',
+);
 
-    die 'Missing NewRelic license key' unless $license_key;
-    die 'Missing NewRelic app name'    unless $app_name;
+has app_name => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_app_name',
+);
 
-    $self->agent(
-        NewRelic::Agent->new(
-            license_key => $license_key,
-            app_name    => $app_name,
-        )
+has cache => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_cache',
+);
+
+has agent => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_agent',
+);
+
+has path_rules => (
+    is      => 'ro',
+    default => sub { {} },
+);
+
+method _build_license_key {
+    my $license_key = $ENV{NEWRELIC_LICENSE_KEY};
+    die 'Missing NewRelic license key' unless $self->license_key;
+    return $license_key;
+}
+
+method _build_app_name {
+    my $app_name = $ENV{NEWRELIC_APP_NAME};
+    die 'Missing NewRelic app name' unless $app_name;
+    return $app_name;
+}
+
+method _build_cache {
+    return CHI->new(
+        driver => 'RawMemory',
+        global => 1,
     );
-    $self->agent->initialize;
+}
+
+method _build_agent {
+    return $self->cache->compute('agent', '5min', sub {
+        my $agent = NewRelic::Agent->new(
+            license_key => $self->license_key,
+            app_name    => $self->app_name,
+        );
+        $agent->embed_collector;
+        $agent->init;
+        return $agent;
+    });
 }
 
 method call(HashRef $env) {
@@ -49,6 +96,14 @@ method call(HashRef $env) {
     );
 }
 
+method transform_path(Str $path) {
+    while (my ($pattern, $replacement) = each $self->path_rules) {
+        next unless $pattern && $replacement;
+        $path =~ s/$pattern/$replacement/ee;
+    }
+    return $path;
+}
+
 method begin_transaction(HashRef $env) {
     # Begin the transaction
     my $txn_id = $self->agent->begin_transaction;
@@ -59,8 +114,9 @@ method begin_transaction(HashRef $env) {
     # Populate transaction data
     $self->agent->set_transaction_request_url($txn_id, $req->request_uri);
     my $method = $req->method;
-    my $path   = $req->path;
-    $self->agent->set_transaction_name($txn_id, "$method $path");
+    my $path   = $self->transform_path($req->path);
+    my $name   = "$method $path";
+    $self->agent->set_transaction_name($txn_id, $name);
     for my $key (qw/Accept Accept-Language User-Agent/) {
         my $value = $req->header($key);
         $self->agent->add_transaction_attribute($txn_id, $key, $value)
@@ -83,7 +139,6 @@ method end_transaction(HashRef $env) {
     my $app = sub { ... } # as usual
     # NewRelic Options
     my %options = (
-        enabled     => 1,
         license_key => 'asdf1234',
         app_name    => 'REST API',
     );
@@ -115,6 +170,15 @@ This value is also automatically sourced from the C<NEWRELIC_LICENSE_KEY> enviro
 The name of your application.
 
 This value is also automatically sourced from the C<NEWRELIC_APP_NAME> environment variable.
+
+=item - C<path_rules>
+
+A HashRef containing path replacement rules, containing case-insensitive regex patterns as string keys, and evaluatable strings as replacement values.
+
+Regex capturing groups work as intended, so you can specify something like this in your ruleset:
+
+    # Replaces '/pages/new/asdf' with '/pages/new'
+    '(\/pages\/new)\/\S+' => '$1'
 
 =back
 
