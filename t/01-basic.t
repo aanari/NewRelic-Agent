@@ -9,8 +9,8 @@ SCOPE: {
         'Defaulted app name to "AppName"';
     is $o->get_app_language => 'perl',
         'Defaulted app language to "perl"';
-    is $o->get_app_language_version => '5.014002',
-        'Defaulted app version to "5.014002"';
+    is $o->get_app_language_version => $],
+        'Defaulted app version to "$]"';
 
     $o = NewRelic::Agent->new(
        license_key          => 'asdf1234',
