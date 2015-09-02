@@ -4,7 +4,6 @@ use Moo;
 
 use 5.010;
 use CHI;
-use Method::Signatures;
 use NewRelic::Agent;
 use Plack::Request;
 use Plack::Util;
@@ -40,26 +39,28 @@ has path_rules => (
     default => sub { {} },
 );
 
-method _build_license_key {
+sub _build_license_key {
+    my $self = shift;
     my $license_key = $ENV{NEWRELIC_LICENSE_KEY};
     die 'Missing NewRelic license key' unless $self->license_key;
     return $license_key;
 }
 
-method _build_app_name {
+sub _build_app_name {
     my $app_name = $ENV{NEWRELIC_APP_NAME};
     die 'Missing NewRelic app name' unless $app_name;
     return $app_name;
 }
 
-method _build_cache {
+sub _build_cache {
     return CHI->new(
         driver => 'RawMemory',
         global => 1,
     );
 }
 
-method _build_agent {
+sub _build_agent {
+    my $self = shift;
     return $self->cache->compute('agent', '5min', sub {
         my $agent = NewRelic::Agent->new(
             license_key => $self->license_key,
@@ -71,7 +72,9 @@ method _build_agent {
     });
 }
 
-method call(HashRef $env) {
+sub call {
+    my ($self, $env) = @_;
+
     $self->begin_transaction($env)
         if $self->agent;
 
@@ -84,8 +87,10 @@ method call(HashRef $env) {
  
     Plack::Util::response_cb(
         $res,
-        func($res) {
-            func($chunk) {
+        sub {
+            my $res = shift;
+            sub {
+                my $chunk = shift;
                 if (!defined $chunk) {
                     $self->end_transaction($env);
                     return;
@@ -96,18 +101,24 @@ method call(HashRef $env) {
     );
 }
 
-method transform_path(Str $path) {
-    while (my ($pattern, $replacement) = each $self->path_rules) {
+sub transform_path {
+    my ($self, $path) = @_;
+
+    while (my ($pattern, $replacement) = each %{ $self->path_rules }) {
         next unless $pattern && $replacement;
         $path =~ s/$pattern/$replacement/ee;
     }
     return $path;
 }
 
-method begin_transaction(HashRef $env) {
+
+sub begin_transaction {
+    my ($self, $env) = @_;
+
     # Begin the transaction
     my $txn_id = $self->agent->begin_transaction;
     return unless $txn_id >= 0;
+
     my $req = Plack::Request->new($env);
     $env->{TRANSACTION_ID} = $txn_id;
 
@@ -124,7 +135,10 @@ method begin_transaction(HashRef $env) {
     }
 }
 
-method end_transaction(HashRef $env) {
+
+sub end_transaction {
+    my ($self, $env) = @_;
+
     if (my $txn_id = $env->{TRANSACTION_ID}) {
         $self->agent->end_transaction($txn_id);
     }
