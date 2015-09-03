@@ -1,3 +1,2 @@
 .build
-blib/
-NewRelic-Agent-*
+Plack-Middleware-NewRelic-*
