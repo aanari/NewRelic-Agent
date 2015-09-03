@@ -4,7 +4,7 @@ NewRelic::Agent - Perl Agent for NewRelic APM
 
 # VERSION
 
-version 0.0510
+version 0.0530
 
 # SYNOPSIS
 
@@ -314,6 +314,11 @@ feature.
 # AUTHOR
 
 Ali Anari <ali@anari.me>
+
+# CONTRIBUTORS
+
+- Slobodan Mišković <slobodan@miskovic.ca>
+- Tim Bunce <tim@tigerlms.com>
 
 # COPYRIGHT AND LICENSE
 
