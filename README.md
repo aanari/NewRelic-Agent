@@ -4,7 +4,7 @@ Plack::Middleware::NewRelic - Plack middleware for NewRelic APM instrumentation
 
 # VERSION
 
-version 0.0502
+version 0.0510
 
 # SYNOPSIS
 
@@ -64,6 +64,10 @@ feature.
 # AUTHOR
 
 Ali Anari <ali@anari.me>
+
+# CONTRIBUTOR
+
+Tim Bunce <tim@tigerlms.com>
 
 # COPYRIGHT AND LICENSE
 
