@@ -1,5 +1,4 @@
 requires "CHI" => "0";
-requires "Method::Signatures" => "0";
 requires "Moo" => "0";
 requires "NewRelic::Agent" => "0";
 requires "Plack::Middleware" => "0";
