@@ -41,7 +41,7 @@ static const char * const NEWRELIC_DATASTORE_DELETE = "delete";
  * All Transaction library functions used for instrumentation will immediately
  * return when you disable.
  *
- * @param set_enabled  0 to enable, 1 to disable
+ * @param set_enabled  0 to disable, 1 to enable
  */
 void newrelic_enable_instrumentation(int set_enabled);
 
