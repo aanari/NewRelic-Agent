@@ -1,14 +1,15 @@
 package NewRelic::Agent;
 use strict;
 use warnings;
-use Method::Signatures;
 
-our $VERSION = '0.0510';
+our $VERSION = '0.0530';
 
 require XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
 
-method new(%args) {
+sub new {
+    my ($self, %args) = @_;
+
     my $license_key          = delete $args{license_key}
                             || $ENV{NEWRELIC_LICENSE_KEY}
                             || '';
@@ -22,7 +23,12 @@ method new(%args) {
                             || $ENV{NEWRELIC_APP_LANGUAGE_VERSION}
                             || $];
 
-    $self->_new($license_key, $app_name, $app_language, $app_language_version);
+    if (%args) {
+        require Carp;
+        Carp::croak("Invalid arguments: @{[ keys %args ]}");
+    }
+
+    return $self->_new($license_key, $app_name, $app_language, $app_language_version);
 }
 
 1;
