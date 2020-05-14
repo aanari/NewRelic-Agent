@@ -337,4 +337,19 @@ B<Example:>
 
     my $app_language_version = $agent->get_app_language_version;
 
+=head1 CAVEATS
+
+The NewRelic Agent CDK on which this module is based never left beta
+and is no longer supported by NewRelic.
+
+=head1 SEE ALSO
+
+=over 4
+
+=item L<NewFangle>
+
+An unofficial NewRelic SDK based on their C-SDK
+
+=back
+
 =cut
