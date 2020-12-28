@@ -124,7 +124,7 @@ Returns `0` on success, else negative warning code or error code.
 
 ## set\_transaction\_category
 
-Sets the transaction's category name (.e.g `Uri` in "WebTransaction/Uri/<txn\_name>").
+Sets the transaction's category name (.e.g `Uri` in "WebTransaction/Uri/&lt;txn\_name>").
 
 Returns `0` on success, else negative warning code or error code.
 
@@ -302,10 +302,21 @@ Returns the application language's version that the agent has loaded. This is us
 
     my $app_language_version = $agent->get_app_language_version;
 
+# CAVEATS
+
+The NewRelic Agent CDK on which this module is based never left beta
+and is no longer supported by NewRelic.
+
+# SEE ALSO
+
+- [NewFangle](https://metacpan.org/pod/NewFangle)
+
+    An unofficial NewRelic SDK based on their C-SDK
+
 # BUGS
 
 Please report any bugs or feature requests on the bugtracker website
-https://github.com/aanari/NewRelic-Agent/issues
+[https://github.com/aanari/NewRelic-Agent/issues](https://github.com/aanari/NewRelic-Agent/issues)
 
 When submitting a bug or request, please include a test-file or a
 patch to an existing test-file that illustrates the bug or desired
